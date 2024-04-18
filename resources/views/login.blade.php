@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Login | Hebb Model</title>
 
         @vite('resources/css/app.css')
     </head>
@@ -17,20 +17,20 @@
             </div>
         
             <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form class="space-y-6" action="#" method="POST">
-                {{-- field name --}}
-                <div>
-                    <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Usernama : </label>
-                    <div class="mt-2">
-                        <input id="username" username="username" type="username" autocomplete="username" required class="input-style">
+                <form class="space-y-6" action="/home" method="GET">
+                    {{-- field name --}}
+                    <div>
+                        <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username : </label>
+                        <div class="mt-2">
+                            <input id="username" username="username" type="text" autocomplete="username" required class="input-style">
+                        </div>
                     </div>
-                </div>
-        
-                {{-- button login --}}
-                <div>
-                    <button type="submit" class="button-style">Sign in</button>
-                </div>
-            </form>
+            
+                    {{-- button login --}}
+                    <div>
+                        <button type="submit" class="button-style">Sign in</button>
+                    </div>
+                </form>
             </div>
         </div>
     </body>
