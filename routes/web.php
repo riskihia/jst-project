@@ -17,3 +17,5 @@ Route::post('/model', [HomeControler::class, 'store_model']);
 Route::get('/model', [ModelControler::class, 'index']);
 
 Route::post('/tabel', [ModelControler::class, 'store_tabel']);
+
+Route::post('/pola', [ModelControler::class, 'store_pola']);

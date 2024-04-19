@@ -39,35 +39,14 @@
             {{-- pola --}}
             <div class="container border border-dashed border-blue-400 p-4 mb-4">
                 <h1 class="text-4xl text-center text-blue-600 font-bold mb-4">Pola</h1>
-                <form action="#" method="post">
+                <form action="/pola" method="POST">
+                    @csrf
                     <div class="w-[250px] h-[250px] bg-gray-200 grid grid-cols-3 gap-2 p-2 mx-auto">
-                        <div class="sell-tabel bg-gray-50 cursor-pointer hover:bg-blue-300">
-                            <input type="checkbox" class="cell-checkbox opacity-0" value="01">
-                        </div>
-                        <div class="sell-tabel bg-gray-50 cursor-pointer hover:bg-blue-300">
-                            <input type="checkbox" class="cell-checkbox opacity-0" value="02">
-                        </div>
-                        <div class="sell-tabel bg-gray-50 cursor-pointer hover:bg-blue-300">
-                            <input type="checkbox" class="cell-checkbox opacity-0" value="03">
-                        </div>
-                        <div class="sell-tabel bg-gray-50 cursor-pointer hover:bg-blue-300">
-                            <input type="checkbox" class="cell-checkbox opacity-0" value="04">
-                        </div>
-                        <div class="sell-tabel bg-gray-50 cursor-pointer hover:bg-blue-300">
-                            <input type="checkbox" class="cell-checkbox opacity-0" value="05">
-                        </div>
-                        <div class="sell-tabel bg-gray-50 cursor-pointer hover:bg-blue-300">
-                            <input type="checkbox" class="cell-checkbox opacity-0" value="06">
-                        </div>
-                        <div class="sell-tabel bg-gray-50 cursor-pointer hover:bg-blue-300">
-                            <input type="checkbox" class="cell-checkbox opacity-0" value="07">
-                        </div>
-                        <div class="sell-tabel bg-gray-50 cursor-pointer hover:bg-blue-300">
-                            <input type="checkbox" class="cell-checkbox opacity-0" value="08">
-                        </div>
-                        <div class="sell-tabel bg-gray-50 cursor-pointer hover:bg-blue-300">
-                            <input type="checkbox" class="cell-checkbox opacity-0" value="09">
-                        </div>
+                        @for($i = 1; $i <= 9; $i++)
+                            <div class="sell-tabel bg-gray-50 cursor-pointer hover:bg-blue-300">
+                                <input type="checkbox" class="cell-checkbox opacity-0" name="box{{ $i }}">
+                            </div>
+                        @endfor
                     </div>
                 
                     <div class="flex flex-col">
@@ -83,11 +62,10 @@
                     <div class="flex flex-col">
                         <label class="font-medium text-xl" for="nama-pola">Nama pola : </label>
                         
-                        <input class="rounded-md my-2 lg:w-1/2" type="text" name="nama-pola" id="nama-pola">
+                        <input class="rounded-md my-2 lg:w-1/2" type="text" name="nama_pola" id="nama-pola">
                     </div>
 
-
-                    <button class="bg-blue-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Insert Pola</button>
+                    <button type="submit" class="bg-blue-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Insert Pola</button>
                 </form>
             </div>
 
