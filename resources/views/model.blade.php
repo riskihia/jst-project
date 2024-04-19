@@ -69,40 +69,55 @@
                 </form>
             </div>
 
-            {{-- train --}}
+            {{-- train --}}  
             <div class="container border border-dashed border-blue-400 p-4 mb-4">
                 <h1 class="text-4xl text-center text-blue-600 font-bold mb-4">Train</h1>
-                <form action="/train" method="POST">
-                    @csrf
+                @if ($user->jst_model->tabel()->exists())
+                    <form action="/train" method="POST">
+                        @csrf
 
-                    @foreach ($user->jst_model->tabel->polas()->get() as $key => $pola)
-                        <div class="relative flex gap-x-3">
-                            <div class="flex h-6 items-center">
-                                <input id="pola{{$key}}" name="pola[{{$key}}]" type="checkbox" value="{{$pola->id}}" class="checkbox-input-style">
+                        @foreach ($user->jst_model->tabel->polas()->get() as $key => $pola)
+                            <div class="relative flex gap-x-3">
+                                <div class="flex h-6 items-center">
+                                    <input id="pola{{$key}}" name="pola[{{$key}}]" type="checkbox" value="{{$pola->id}}" class="checkbox-input-style">
+                                </div>
+                                <div class="text-sm leading-6">
+                                    <label for="pola{{$key}}" class="font-medium text-base text-gray-900">Pola {{$key + 1}}: {{$pola->name}}</label>
+                                </div>
                             </div>
-                            <div class="text-sm leading-6">
-                                <label for="pola{{$key}}" class="font-medium text-base text-gray-900">Pola {{$key + 1}}: {{$pola->name}}</label>
-                            </div>
+                        @endforeach
+
+                        @if(session()->has('error'))
+                            <p class="text-base font-medium text-red-500">{{session('error')}}</p>
+                        @endif
+                        
+                        <button type="submit" class="bg-blue-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Train Pola</button>
+                    </form>
+                @else
+                    <div class="flex h-6 items-center">
+                        <input type="checkbox" class="checkbox-input-style">
+                        <div class="text-sm leading-6">
+                            <label class="font-medium text-base text-gray-900 ml-4">Silahkan buat pola terlebih dahulu</label>
                         </div>
-                    @endforeach                
-                    <button type="submit" class="bg-blue-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Train Pola</button>
-                </form>
-
+                    </div>
+                    <button disabled type="submit" class="bg-red-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Train Pola</button>
+                @endif
             </div>
             
             
             {{-- hasil train --}}
             <div class="container border border-dashed border-blue-400 p-4 mb-4">
                 <h1 class="text-4xl text-center text-blue-600 font-bold mb-4">Hasil Train</h1>
-
+                
                 <ul class="list-disc pl-4">
-                    <li class="text-base font-medium">Pola 1 :: berhasil</li>
-                    <li class="text-base font-medium">Pola 1 :: berhasil</li>
-                    <li class="text-base font-medium">Pola 1 :: berhasil</li>
-                    <li class="text-base font-medium">...</li>
+                    @if(session()->has('final_result'))
+                        @foreach(session('final_result') as $result)
+                            <li class="text-base font-medium">{{$result}}</li>
+                        @endforeach
+                    @endif
                 </ul>
 
-                <button class="bg-blue-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Simpan model</button>
+                <button class="bg-green-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Simpan model</button>
             </div>
         </div>
     </body>

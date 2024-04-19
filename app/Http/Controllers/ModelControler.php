@@ -82,42 +82,26 @@ class ModelControler extends Controller
         return redirect('/model');
     }
 
-    // public function train_pola(Request $request)
-    // {
-    //     $polas = $request->input('pola');
-    //     // dd($polas);
-    //     $delta = [];
-    //     foreach($polas as $index => $pola){
-    //         $pola = Pola::find($pola);
-    //         $cells = $pola->cell;
-
-    //         $bias = $pola->bias;
-
-    //         $target = $pola->target;
-    //         foreach($cells as $index => $cell){
-    //             $delta['w'.$index] = $cell * $target;
-    //         }
-    //         $delta['bias'] = $bias * $target;
-            
-    //     }
-    //     dump($delta);
-    //     dd("done");
-    // }
-
     public function train_pola(Request $request)
     {
         $polas = $request->input('pola');
         $delta = [[]];
         $weight = [[]];
-        // dd($polas);
-        // dd(count($polas));
+        $target_array = [];
+        if(count($polas) < 2){
+            return redirect('/model')->with('error', 'Pilih pola lebih dari 1 terlebih dahulu');
+        }
 
+        //mencari nilai delta dan weight
         for($x=0; $x < count($polas); $x++) {
             if($x == 0){
                 $pola = Pola::find($polas[$x]);
                 $cell = $pola->cell;
                 $bias = $pola->bias;
                 $target = $pola->target;
+
+                // collect target for last step
+                $target_array[$x] = $target;
     
                 for($i=1; $i<=9; $i++){
                     $delta[$x]['w'.$i] = $cell['x'.$i] * $target;
@@ -138,6 +122,9 @@ class ModelControler extends Controller
             $bias = $pola->bias;
             $target = $pola->target;
 
+            // collect target
+            $target_array[$x] = $target;
+
             for($i=1; $i<=9; $i++){
                 $delta[$x]['w'.$i] = $cell['x'.$i] * $target;
             }
@@ -145,14 +132,48 @@ class ModelControler extends Controller
 
             //create weight array
             for($i=1; $i<=9; $i++){
-                $weight[$x]['weight'.$i] = $delta[$x]['w'.$i] + $delta[$x-1]['w'.$i];
+                $weight[$x]['weight'.$i] = $delta[$x]['w'.$i] + $weight[$x-1]['weight'.$i];
             }
             $weight[$x]['bias'] = $delta[$x]['bias'] + $delta[$x-1]['bias'];
         }
 
-        dump($delta);
-        dump($weight);
-        dd("done");
+        // menghitung nilai NET
+        $net = [];
+
+        for($x = 0; $x < count($polas); $x++){
+            $fix_weight = $weight[count($delta) - 1];
+            $temp_net = 0;
+
+            $pola = Pola::find($polas[$x]);
+            $cell = $pola->cell;
+            for($i=1; $i<=9; $i++){
+                $temp_net += $fix_weight['weight'.$i] * $cell['x'.$i];
+                
+                if($i == 9){
+                    $temp_net += $fix_weight['bias'];
+                }
+            }
+            $net[$x] = $temp_net;
+        }
+
+        // periksa nilai NET
+        $net_result = [];
+        foreach($net as $index => $net_item){
+            if($net_item >= 0){
+                $net_result[$index] = 1;
+            }else{
+                $net_result[$index] = -1;
+            }
+        }
+
+        // periksa hasil net dengan target. apakah sama?
+        $final_result = [];
+        foreach($target_array as $index => $target){
+            $final_result[$index] = $target == $net_result[$index] ? "Pola ".$index." VALID" : "Pola ".$index." NOT VALID";
+        }
+
+        return redirect('/model')->with('final_result', $final_result);
+        
     }
 
 }

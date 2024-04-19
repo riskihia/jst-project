@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->enum('target', [1, -1])->default(1);
             $table->integer('bias')->default(1);
+            $table->boolean('is_locked')->nullable();
             
             $table->unsignedBigInteger('tabel_id');
             $table->unsignedBigInteger('cell_id');
