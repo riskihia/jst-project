@@ -22,9 +22,11 @@
             <div class="container border border-dashed border-blue-400 p-4 mb-4">
                 <h1 class="text-4xl text-center text-blue-600 font-bold mb-4">Model</h1>
                 @if ($model_exists)
-                    <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
+                    <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 my-4" role="alert">
                         <p class="font-bold">Model already exists -> <span class="text-green-600 uppercase cursor-pointer">{{$model_name}}</span></p>
                     </div>
+
+                    <a href="/model" class="bg-blue-600 py-2 px-4 my-8 text-xl text-white rounded-md">Model Configuration</a>
                 @else
                     <form action="/model" method="POST">
                         @csrf

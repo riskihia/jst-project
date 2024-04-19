@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeControler;
+use App\Http\Controllers\ModelControler;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
@@ -13,3 +14,6 @@ Route::post('/logout', [HomeControler::class, 'logout']);
 
 
 Route::post('/model', [HomeControler::class, 'store_model']);
+Route::get('/model', [ModelControler::class, 'index']);
+
+Route::post('/tabel', [ModelControler::class, 'store_tabel']);

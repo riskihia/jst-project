@@ -9,19 +9,31 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="h-full">
+        
+        
         <div class="lg:w-8/12 lg:mx-auto mx-2 mt-2">
+            {{-- back --}}
+            <a href="/home" class="bg-blue-600 py-2 px-4 mb-4 inline-block text-xl text-white rounded-md">Back to home</a>
+            
             {{-- create tabel --}}
             <div class="container border border-dashed border-blue-400 p-4 mb-4">
                 <h1 class="text-4xl text-center text-blue-600 font-bold mb-4">Tabel</h1>
-                <form action="#" method="post">
-                    <div class="flex flex-col">
-                        <label class="font-medium text-xl" for="tabel-name">Nama tabel : </label>
-                        
-                        <input class="rounded-md my-2 lg:w-1/2" type="text" name="tabel-name" id="tabel-name">
+                @if ($tabel_exists)
+                    <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3 my-4" role="alert">
+                        <p class="font-bold">Tabel already exists -> <span class="text-green-600 uppercase cursor-pointer">{{$tabel_name}}</span></p>
                     </div>
+                @else
+                    <form action="/tabel" method="POST">
+                        @csrf
+                        <div class="flex flex-col">
+                            <label class="font-medium text-xl" for="tabel-name">Nama tabel : </label>
+                            
+                            <input class="rounded-md my-2 lg:w-1/2" type="text" name="tabel_name" id="tabel-name">
+                        </div>
 
-                    <button class="bg-blue-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Create tabel</button>
-                </form>
+                        <button type="submit" class="bg-blue-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Create tabel</button>
+                    </form>
+                @endif
             </div>
 
             {{-- pola --}}

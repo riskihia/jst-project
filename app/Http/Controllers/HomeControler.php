@@ -28,14 +28,14 @@ class HomeControler extends Controller
     // model
     public function store_model(Request $request)
     {
-        $model_name= request('model_name');
+        $model_name= $request->input('model_name');
 
         $model = new Jst_model();
         $model->user_id = Auth::id();
         $model->name = $model_name;
         $model->save();
 
-        return redirect('/home')->with('message', 'Model created : '.$model_name);
+        return redirect('/home');
     }
 
     // login
