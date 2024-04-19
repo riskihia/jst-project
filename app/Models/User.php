@@ -44,7 +44,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function jst_models()
+    public function jst_model()
     {
         return $this->hasOne(Jst_model::class);
     }

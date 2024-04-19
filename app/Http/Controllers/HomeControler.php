@@ -14,12 +14,12 @@ class HomeControler extends Controller
     {
         $user = Auth::user();
         $username = $user->name;
-
-        $model = Jst_model::all();
+        
         $model_exists = false;
-        if($model){
+
+        if($user->jst_model != null){
             $model_exists = true;
-            $model_name = $model->first()->name;
+            $model_name = $user->jst_model->name;
             return view('home', compact('username', 'model_exists', 'model_name'));
         }
         return view('home', compact('username', 'model_exists'));
