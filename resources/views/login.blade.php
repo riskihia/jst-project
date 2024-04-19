@@ -15,14 +15,17 @@
             <h2 class="login-h1">Silahkan login terlebih dahulu</h2>
             {{-- <h2 class="bg-violet-800">Silahkan login terlebih dahulu</h2> --}}
             </div>
+
         
             <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form class="space-y-6" action="/home" method="GET">
+                
+                <form class="space-y-6" action="{{url('/login')}}" method="POST">
+                    @csrf
                     {{-- field name --}}
                     <div>
                         <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username : </label>
                         <div class="mt-2">
-                            <input id="username" username="username" type="text" autocomplete="username" required class="input-style">
+                            <input id="username" name="username" type="text" autocomplete="username" required class="input-style">
                         </div>
                     </div>
             

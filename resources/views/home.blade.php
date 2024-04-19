@@ -10,6 +10,14 @@
     </head>
     <body class="h-full">
         <div class="lg:w-8/12 lg:mx-auto mx-2 mt-2">
+            <span class="text-green-500 italic">
+                Welcome : {{$username}}
+            </span>
+            <form action="/logout" method="POST">
+                @csrf
+                <button class="text-red-500 italic" type="submit">logout...</button>
+            </form>
+
             {{-- create model --}}
             <div class="container border border-dashed border-blue-400 p-4 mb-4">
                 <h1 class="text-4xl text-center text-blue-600 font-bold mb-4">Model</h1>
