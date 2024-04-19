@@ -20,10 +20,10 @@ class ModelControler extends Controller
         if($user->jst_model->tabel != null){
             $tabel_exists = true;
             $tabel_name = $user->jst_model->tabel->name;
-            return view('model', compact('username', 'tabel_exists', 'tabel_name'));
+            return view('model', compact('user', 'username', 'tabel_exists', 'tabel_name'));
         }
 
-        return view('model', compact('username', 'tabel_exists'));
+        return view('model', compact('user', 'username', 'tabel_exists'));
     }
 
     public function store_tabel(Request $request)
@@ -50,14 +50,13 @@ class ModelControler extends Controller
         $x2 = $request->input('box2');
         $x3 = $request->input('box3');
         $x4 = $request->input('box4');
-
-        // dd([$x1, $x2, $x3, $x4]);
-
         $x5 = $request->input('box5');
         $x6 = $request->input('box6');
         $x7 = $request->input('box7');
         $x8 = $request->input('box8');
         $x9 = $request->input('box9');
+
+        // dd([$x1, $x2, $x3, $x4, $x5, $x6, $x7, $x8, $x9]);
 
         $cell = Cell::create([
             "tabel_id" => $user->jst_model->tabel->id,
@@ -72,6 +71,14 @@ class ModelControler extends Controller
             "x9" => $x9 == null ? -1 : 1,
         ]);
 
-        dd($cell);
+        $pola = Pola::create([
+            "tabel_id" => $user->jst_model->tabel->id,
+            "cell_id" => $cell->id,
+            "target" => $target,
+            "bias" => $bias,
+            "name" => $nama_pola,
+        ]);
+
+        return redirect('/model');
     }
 }
