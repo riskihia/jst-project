@@ -19,3 +19,5 @@ Route::get('/model', [ModelControler::class, 'index']);
 Route::post('/tabel', [ModelControler::class, 'store_tabel']);
 
 Route::post('/pola', [ModelControler::class, 'store_pola']);
+
+Route::post('/train', [ModelControler::class, 'train_pola']);

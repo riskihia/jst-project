@@ -81,4 +81,78 @@ class ModelControler extends Controller
 
         return redirect('/model');
     }
+
+    // public function train_pola(Request $request)
+    // {
+    //     $polas = $request->input('pola');
+    //     // dd($polas);
+    //     $delta = [];
+    //     foreach($polas as $index => $pola){
+    //         $pola = Pola::find($pola);
+    //         $cells = $pola->cell;
+
+    //         $bias = $pola->bias;
+
+    //         $target = $pola->target;
+    //         foreach($cells as $index => $cell){
+    //             $delta['w'.$index] = $cell * $target;
+    //         }
+    //         $delta['bias'] = $bias * $target;
+            
+    //     }
+    //     dump($delta);
+    //     dd("done");
+    // }
+
+    public function train_pola(Request $request)
+    {
+        $polas = $request->input('pola');
+        $delta = [[]];
+        $weight = [[]];
+        // dd($polas);
+        // dd(count($polas));
+
+        for($x=0; $x < count($polas); $x++) {
+            if($x == 0){
+                $pola = Pola::find($polas[$x]);
+                $cell = $pola->cell;
+                $bias = $pola->bias;
+                $target = $pola->target;
+    
+                for($i=1; $i<=9; $i++){
+                    $delta[$x]['w'.$i] = $cell['x'.$i] * $target;
+                }
+                $delta[$x]['bias'] = $bias * $target;
+
+                //create weight array
+                for($i=1; $i<=9; $i++){
+                    $weight[$x]['weight'.$i] = $delta[$x]['w'.$i];
+                }
+                $weight[$x]['bias'] = $delta[$x]['bias'];
+
+                continue;
+            }
+
+            $pola = Pola::find($polas[$x]);
+            $cell = $pola->cell;
+            $bias = $pola->bias;
+            $target = $pola->target;
+
+            for($i=1; $i<=9; $i++){
+                $delta[$x]['w'.$i] = $cell['x'.$i] * $target;
+            }
+            $delta[$x]['bias'] = $bias * $target;
+
+            //create weight array
+            for($i=1; $i<=9; $i++){
+                $weight[$x]['weight'.$i] = $delta[$x]['w'.$i] + $delta[$x-1]['w'.$i];
+            }
+            $weight[$x]['bias'] = $delta[$x]['bias'] + $delta[$x-1]['bias'];
+        }
+
+        dump($delta);
+        dump($weight);
+        dd("done");
+    }
+
 }
