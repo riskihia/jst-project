@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jst_model;
 use App\Models\User;
 use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Http\Request;
@@ -13,7 +14,28 @@ class HomeControler extends Controller
     {
         $user = Auth::user();
         $username = $user->name;
-        return view('home', compact('username'));
+
+        $model = Jst_model::all();
+        $model_exists = false;
+        if($model){
+            $model_exists = true;
+            $model_name = $model->first()->name;
+            return view('home', compact('username', 'model_exists', 'model_name'));
+        }
+        return view('home', compact('username', 'model_exists'));
+    }
+
+    // model
+    public function store_model(Request $request)
+    {
+        $model_name= request('model_name');
+
+        $model = new Jst_model();
+        $model->user_id = Auth::id();
+        $model->name = $model_name;
+        $model->save();
+
+        return redirect('/home')->with('message', 'Model created : '.$model_name);
     }
 
     // login

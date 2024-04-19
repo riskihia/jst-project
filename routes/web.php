@@ -12,6 +12,4 @@ Route::post('/login', [HomeControler::class, 'store_login']);
 Route::post('/logout', [HomeControler::class, 'logout']);
 
 
-Route::get('/model', function () {
-    return view('model');
-});
+Route::post('/model', [HomeControler::class, 'store_model']);

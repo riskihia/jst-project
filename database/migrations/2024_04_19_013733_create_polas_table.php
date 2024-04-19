@@ -17,8 +17,8 @@ return new class extends Migration
             $table->enum('target', [1, -1])->default(1);
             $table->integer('bias')->default(1);
             
-            $table->integer('tabel_id');
-            $table->integer('cell_id');
+            $table->unsignedBigInteger('tabel_id');
+            $table->unsignedBigInteger('cell_id');
             $table->foreign('tabel_id')->references('id')->on('tabels')->onDelete('cascade');
             $table->foreign('cell_id')->references('id')->on('cells')->onDelete('cascade');
             
