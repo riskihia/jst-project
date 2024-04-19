@@ -16,11 +16,12 @@ class ModelControler extends Controller
         $username = $user->name;
         
         $tabel_exists = false;
+        $is_valid_model = false;
 
         if($user->jst_model->tabel != null){
             $tabel_exists = true;
             $tabel_name = $user->jst_model->tabel->name;
-            return view('model', compact('user', 'username', 'tabel_exists', 'tabel_name'));
+            return view('model', compact('user', 'username','is_valid_model', 'tabel_exists', 'tabel_name'));
         }
 
         return view('model', compact('user', 'username', 'tabel_exists'));
@@ -167,13 +168,43 @@ class ModelControler extends Controller
         }
 
         // periksa hasil net dengan target. apakah sama?
+        $is_valid_model = true;
         $final_result = [];
         foreach($target_array as $index => $target){
             $final_result[$index] = $target == $net_result[$index] ? "Pola ".$index." VALID" : "Pola ".$index." NOT VALID";
         }
 
-        return redirect('/model')->with('final_result', $final_result);
+        foreach($final_result as $result){
+            if(strpos($result, "NOT VALID") !== false){
+                $is_valid_model = false;
+            }
+        }
+        $locked_pola_id = [];
+        if($is_valid_model){
+            foreach($polas as $pola){
+                $locked_pola_id[] = $pola;
+            }
+        }
+
+        $user = Auth::user();
+        $tabel_exists = Auth::user()->jst_model->tabel != null ? true : false;
+        $tabel_name = Auth::user()->jst_model->tabel->name;
+        
+        session()->flash('final_result', $final_result);
+        return view('model', compact('user', 'is_valid_model','locked_pola_id', 'tabel_exists', 'tabel_name'));
+        // return redirect('/model')->with('final_result', $final_result);
         
     }
 
+    public function save_model(Request $request)
+    {
+        $pola_ids = $request->input('pola_ids');
+        foreach($pola_ids as $pola_id){
+            $pola = Pola::where('id', $pola_id)->first();
+            $pola->is_locked = true;
+            $pola->save();
+        }
+
+        return redirect('/model')->with('success', 'Model berhasil disimpan');
+    }
 }

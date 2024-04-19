@@ -21,3 +21,5 @@ Route::post('/tabel', [ModelControler::class, 'store_tabel']);
 Route::post('/pola', [ModelControler::class, 'store_pola']);
 
 Route::post('/train', [ModelControler::class, 'train_pola']);
+
+Route::post('/save-model', [ModelControler::class, 'save_model']);

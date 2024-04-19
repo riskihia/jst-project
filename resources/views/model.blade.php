@@ -109,6 +109,13 @@
             <div class="container border border-dashed border-blue-400 p-4 mb-4">
                 <h1 class="text-4xl text-center text-blue-600 font-bold mb-4">Hasil Train</h1>
                 
+                @if(session()->has('success'))
+                    <div class="text-green-500 italic font-medium">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+
                 <ul class="list-disc pl-4">
                     @if(session()->has('final_result'))
                         @foreach(session('final_result') as $result)
@@ -117,7 +124,22 @@
                     @endif
                 </ul>
 
-                <button class="bg-green-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Simpan model</button>
+                {{-- @dump(!$is_valid_model) --}}
+                @if($is_valid_model)
+                    <p class="text-base font-medium text-green-300">Data valid. Dapat disimpan</p>         
+                    <form action="/save-model" method="POST">
+                        @csrf
+                        @forelse($locked_pola_id as $id)
+                            <input type="hidden" name="pola_ids[]" value="{{ $id }}">
+                        @empty
+                            <!-- Jika array kosong -->
+                        @endforelse
+                        <button class="bg-green-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Simpan model</button>
+                    </form>           
+                @else
+                    <button disabled class="bg-red-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Simpan model</button>
+                @endif
+
             </div>
         </div>
     </body>
