@@ -23,3 +23,5 @@ Route::post('/pola', [ModelControler::class, 'store_pola']);
 Route::post('/train', [ModelControler::class, 'train_pola']);
 
 Route::post('/save-model', [ModelControler::class, 'save_model']);
+
+Route::post('/prediksi', [HomeControler::class, 'prediksi']);

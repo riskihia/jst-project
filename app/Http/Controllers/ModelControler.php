@@ -57,8 +57,6 @@ class ModelControler extends Controller
         $x8 = $request->input('box8');
         $x9 = $request->input('box9');
 
-        // dd([$x1, $x2, $x3, $x4, $x5, $x6, $x7, $x8, $x9]);
-
         $cell = Cell::create([
             "tabel_id" => $user->jst_model->tabel->id,
             "x1" => $x1 == null ? -1 : 1,
@@ -199,6 +197,11 @@ class ModelControler extends Controller
     public function save_model(Request $request)
     {
         $pola_ids = $request->input('pola_ids');
+        $polas = Pola::all();
+        foreach($polas as $pola){
+            $pola->is_locked = false;
+            $pola->save();
+        }
         foreach($pola_ids as $pola_id){
             $pola = Pola::where('id', $pola_id)->first();
             $pola->is_locked = true;
