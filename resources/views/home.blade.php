@@ -66,6 +66,11 @@
                         {{ session('hasil_prediksi') }}
                     </p>
                 @endif
+                @if(session()->has('error_tabel'))
+                    <p class=" font-medium text-white border bg-red-500 text-center w-1/2 py-4 mx-auto rounded-md">
+                        {{ session('error_tabel') }}
+                    </p>
+                @endif
             </div>
         </div>
     </body>

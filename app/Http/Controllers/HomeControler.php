@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jst_model;
 use App\Models\Pola;
+use App\Models\Tabel;
 use App\Models\User;
 use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Http\Request;
@@ -55,8 +56,15 @@ class HomeControler extends Controller
 
 
         $user = Auth::user();
-        $polas = Pola::where('tabel_id', $user->jst_model->tabel->id)->where('is_locked', 1)->get();
+        $tabel = Tabel::where('jst_model_id', $user->jst_model->id)->first();
         
+        if(!$tabel){
+            $error = "Tabel tidak dikenali";
+            return redirect('/home')->with("error_tabel", $error);
+    
+        }
+
+        $polas = Pola::where('tabel_id', $user->jst_model->tabel->id)->where('is_locked', 1)->get();
         $hasil_prediksi = null;
 
         foreach($polas as $pola){
@@ -74,6 +82,7 @@ class HomeControler extends Controller
         if($hasil_prediksi == null){
             $hasil_prediksi = "Pola tidak dikenali";
         }
+
         
         return redirect('/home')->with("hasil_prediksi", $hasil_prediksi);
     }

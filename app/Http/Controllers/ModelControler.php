@@ -24,7 +24,7 @@ class ModelControler extends Controller
             return view('model', compact('user', 'username','is_valid_model', 'tabel_exists', 'tabel_name'));
         }
 
-        return view('model', compact('user', 'username', 'tabel_exists'));
+        return view('model', compact('user', 'username', 'tabel_exists','is_valid_model'));
     }
 
     public function store_tabel(Request $request)
@@ -43,6 +43,10 @@ class ModelControler extends Controller
     public function store_pola(Request $request)
     {
         $user = Auth::user();
+
+        if($user->jst_model->tabel == null){
+            return redirect('/model')->with("message", "Tabel tidak ada");
+        }
 
         $target = $request->input('target');
         $bias = $request->input('bias');

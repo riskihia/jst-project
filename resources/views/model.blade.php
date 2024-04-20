@@ -48,21 +48,27 @@
                             </div>
                         @endfor
                     </div>
+
+                    @if(session()->has('message'))
+                        <p class=" font-medium text-white border bg-green-500 text-center w-1/2 py-4 mx-auto rounded-md">
+                            {{ session('message') }}
+                        </p>
+                    @endif
                 
                     <div class="flex flex-col">
                         <label class="font-medium text-xl" for="target">Target : </label>
                         
-                        <input class="rounded-md my-2 lg:w-1/2" type="text" name="target" id="target">
+                        <input required class="rounded-md my-2 lg:w-1/2" type="text" name="target" id="target">
                     </div>
                     <div class="flex flex-col">
                         <label class="font-medium text-xl" for="bias">Bias : </label>
                         
-                        <input class="rounded-md my-2 lg:w-1/2" type="text" name="bias" id="bias">
+                        <input required class="rounded-md my-2 lg:w-1/2" type="text" name="bias" id="bias">
                     </div>
                     <div class="flex flex-col">
                         <label class="font-medium text-xl" for="nama-pola">Nama pola : </label>
                         
-                        <input class="rounded-md my-2 lg:w-1/2" type="text" name="nama_pola" id="nama-pola">
+                        <input required class="rounded-md my-2 lg:w-1/2" type="text" name="nama_pola" id="nama-pola">
                     </div>
 
                     <button type="submit" class="bg-blue-600 px-8 py-2 mt-4 text-xl text-white rounded-md">Insert Pola</button>
