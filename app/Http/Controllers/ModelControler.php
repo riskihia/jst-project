@@ -88,9 +88,12 @@ class ModelControler extends Controller
     public function train_pola(Request $request)
     {
         $polas = $request->input('pola');
+        $polas = array_values($polas);
         $delta = [[]];
         $weight = [[]];
         $target_array = [];
+        $collect_input = [[]];
+
         if(count($polas) < 2){
             return redirect('/model')->with('error', 'Pilih pola lebih dari 1 terlebih dahulu');
         }
@@ -98,15 +101,19 @@ class ModelControler extends Controller
         //mencari nilai delta dan weight
         for($x=0; $x < count($polas); $x++) {
             if($x == 0){
+                
                 $pola = Pola::find($polas[$x]);
                 $cell = $pola->cell;
                 $bias = $pola->bias;
                 $target = $pola->target;
-
+                
                 // collect target for last step
                 $target_array[$x] = $target;
-    
+                
                 for($i=1; $i<=9; $i++){
+                    // collect input
+                    $collect_input[$x][] = $cell['x'.$i] * $target;
+
                     $delta[$x]['w'.$i] = $cell['x'.$i] * $target;
                 }
                 $delta[$x]['bias'] = $bias * $target;
@@ -129,6 +136,9 @@ class ModelControler extends Controller
             $target_array[$x] = $target;
 
             for($i=1; $i<=9; $i++){
+                // collect input
+                $collect_input[$x][] = $cell['x'.$i] * $target;
+
                 $delta[$x]['w'.$i] = $cell['x'.$i] * $target;
             }
             $delta[$x]['bias'] = $bias * $target;
@@ -139,7 +149,7 @@ class ModelControler extends Controller
             }
             $weight[$x]['bias'] = $delta[$x]['bias'] + $delta[$x-1]['bias'];
         }
-
+        
         // menghitung nilai NET
         $net = [];
 
@@ -176,6 +186,7 @@ class ModelControler extends Controller
             $final_result[$index] = $target == $net_result[$index] ? "Pola ".$index." VALID" : "Pola ".$index." NOT VALID";
         }
 
+
         foreach($final_result as $result){
             if(strpos($result, "NOT VALID") !== false){
                 $is_valid_model = false;
@@ -192,9 +203,11 @@ class ModelControler extends Controller
         $tabel_exists = Auth::user()->jst_model->tabel != null ? true : false;
         $tabel_name = Auth::user()->jst_model->tabel->name;
         
+        $detail_hitung = true;
+
+
         session()->flash('final_result', $final_result);
-        return view('model', compact('user', 'is_valid_model','locked_pola_id', 'tabel_exists', 'tabel_name'));
-        // return redirect('/model')->with('final_result', $final_result);
+        return view('model', compact('user', 'is_valid_model','locked_pola_id', 'tabel_exists', 'tabel_name', 'detail_hitung','target_array','collect_input', 'target', 'delta', 'weight', 'net_result', 'net', 'final_result'));
         
     }
 

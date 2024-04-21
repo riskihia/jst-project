@@ -110,7 +110,6 @@
                 @endif
             </div>
             
-            
             {{-- hasil train --}}
             <div class="container border border-dashed border-blue-400 p-4 mb-4">
                 <h1 class="text-4xl text-center text-blue-600 font-bold mb-4">Hasil Train</h1>
@@ -147,6 +146,45 @@
                 @endif
 
             </div>
+
+            {{-- perhitungan --}}
+            @isset($detail_hitung)    
+                <div class="container border border-dashed border-blue-400 p-4 mb-4">
+                    <div class="overflow-x-auto border-collapse">
+                        <table>
+                            <thead>
+                                <tr class="bg-slate-400">
+                                    @foreach (['x1', 'x2', 'x3', 'x4', 'x5', 'x6', 'x7', 'x8', 'x9', 'bias', 'target', 'del w1', 'del w2', 'del w3', 'del w4', 'del w5', 'del w6', 'del w7', 'del w8', 'del w9', 'del bias', 'W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8', 'W9', 'B', 'NET', 'f(n)', 'is Valid'] as $header)
+                                        <td class="b-style">{{ $header }}</td>
+                                    @endforeach
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for ($i = 0; $i < count($delta); $i++)
+                                    <tr>
+                                        @foreach ($collect_input[$i] as $item)
+                                            <td class="b-style">{{$item}}</td>
+                                        @endforeach
+                                        <td class="b-style">{{end($delta[$i])}}</td>
+                                        <td class="b-style">{{$target_array[$i]}}</td>
+                                        
+                                        @foreach ($delta[$i] as $item)
+                                            <td class="b-style">{{$item}}</td>
+                                        @endforeach
+
+                                        @foreach ($weight[$i] as $item)
+                                            <td class="b-style">{{$item}}</td>
+                                        @endforeach
+                                        <td class="b-style">{{$net[$i]}}</td>
+                                        <td class="b-style">{{$net_result[$i]}}</td>
+                                        <td class="b-style">{{$final_result[$i]}}</td>
+                                    </tr>
+                                @endfor
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endisset
         </div>
     </body>
 </html>

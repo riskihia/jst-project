@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('polas', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('target', [1, -1])->default(1);
+            $table->enum('target', [0, 1, -1])->default(1);
             $table->integer('bias')->default(1);
             $table->boolean('is_locked')->nullable();
             
